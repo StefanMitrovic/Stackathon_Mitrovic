@@ -1,0 +1,28 @@
+body{
+    background-color: dodgerblue;
+}
+
+.container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.allrows{
+    width: 100%;
+    height: 4%;
+    display: flex;
+}
+
+.allcells{
+    background-color: cornsilk;
+    width: 5%;
+    height: 100%;
+    border-bottom: 1px;
+    border-left: 1px;
+    border-right: 1px;
+    border-top: 1px;
+    border-color: red;
+    border-style: solid;
+}
