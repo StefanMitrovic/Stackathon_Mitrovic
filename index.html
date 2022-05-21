@@ -4,11 +4,22 @@
         <script src="script.js"></script>
     </head>
     <body onload="buildTemplate()">
-        <div id = 'container' class = 'container'></div>
-        <div>
-            <button onClick="solution()">
-                click me
-            </button>
+        <div id = 'page' class="page">
+            <div id = 'container' class = 'container'></div>
+            <div id="control" class = 'control'>
+                <div>
+                    <button onClick="solution()">
+                        Find The Shortest Path!
+                    </button>
+                    <button onClick="generateRandomMaze()">
+                        Generate a New Maze!
+                    </button>
+                    <button onClick="reset()">
+                        Reset
+                    </button>
+                </div>
+            </div>
         </div>
+        
     </body>
 </html>

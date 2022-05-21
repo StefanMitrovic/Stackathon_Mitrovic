@@ -1,5 +1,5 @@
-let maxRow = 10;
-let maxCol = 10;
+let maxRow = 100;
+let maxCol = 100;
 
 const buildTemplate = function(){
     let container = document.getElementById('container');
@@ -9,16 +9,14 @@ const buildTemplate = function(){
         row.className = "allrows row"+(x+1);
         for (let y = 0; y<maxCol; y++){
             let cell = document.createElement('div');
-            cell.id = "cell" + (x*10+(y+1));
-            cell.className = "allcells cell" + (x*10+(y+1));
-
-            if (((x*10)+(y+1)) !=(maxCol*maxRow)  && ((x*10)+(y+1)) != 0){
+            cell.id = "cell" + (x*maxRow+(y+1));
+            cell.className = "allcells cell" + (x*maxRow+(y+1));
+            if (((x*maxRow)+(y+1)) !=(maxCol*maxRow)  && ((x*maxRow)+(y+1)) != 0){
                 //add default color
                 cell.onclick = function() {
                     wall(this.id);
                 }
             }
-
             row.appendChild(cell);
         }
         container.appendChild(row);
@@ -30,7 +28,6 @@ let path = 'green';
 
 const wall = function(elemID){
     let cell = document.getElementById(elemID);
-    console.log('clicked!');
     if (cell.style.backgroundColor == builtWall){
         cell.style.backgroundColor = base;
     } else {
@@ -86,7 +83,6 @@ const solution = function(){
                 if ((newCol >= 0 && newCol < maxCol) && (newRow >= 0 && newRow < maxRow)){
                     if (grid[newRow][newCol] != -1){
                         openSpots.push([newRow, newCol]);
-
                     }
                 }
             }
@@ -103,12 +99,13 @@ const solution = function(){
     let queue = [];
     let solved = false;
     queue.push([0,0]);
+
     while(queue.length > 0){
         let coordinate = queue.splice(0,1)[0];
         let cell = grid[coordinate[0]][coordinate[1]];
         checkedCells[coordinate[0]][coordinate[1]] = true;
 
-        if (cell == 100){
+        if (cell == maxRow*maxCol){
             solved = true;
             break;
         }
@@ -116,6 +113,7 @@ const solution = function(){
         let neighbor = adjacentSet[cell];
         for (let x = 0; x<neighbor.length; x++){
             let check = neighbor[x];
+
             if(!checkedCells[check[0]][check[1]]){
                 checkedCells[check[0]][check[1]] = true;
                 queue.push(check);
@@ -123,23 +121,44 @@ const solution = function(){
             }
         }
     }
+
     if(!solved) {
         console.log('this maze has no solution');
-    }
-    let endPoint = grid[9][9];//change later to be more fluid
-    let startPoint = grid[0][0];
-    document.getElementById('cell'+endPoint).style.backgroundColor = path;
-    let previous = endPoint-1;
-    
-    while(true){
+    } else {
+        let endPoint = grid[maxRow-1][maxCol-1];//change later to be more fluid
+        let startPoint = grid[0][0];
+        document.getElementById('cell'+endPoint).style.backgroundColor = path;
+        let previous = endPoint-1;
         
-        let node = traversed[previous];
-        document.getElementById('cell'+(node+1)).style.backgroundColor = path;
-        if (node == 0){
-            break
-        } else {
-            previous = node;
+        while(true){
+            let node = traversed[previous];
+            document.getElementById('cell'+(node+1)).style.backgroundColor = path;
+            if (node == 0){
+                break
+            } else {
+                previous = node;
+            }
+        }
+        document.getElementById('cell'+startPoint).style.backgroundColor = path;
+    }    
+}
+
+//generate random maze
+
+const generateRandomMaze = () => {
+    for (let x = 2; x<maxCol*maxRow-1; x++){
+        let y = Math.floor(Math.random()*10)+1;
+        if (y <= 3){
+            document.getElementById('cell' + x).style.backgroundColor = builtWall;
         }
     }
-    document.getElementById('cell'+startPoint).style.backgroundColor = path;
 }
+
+const reset = () => {
+    for (let x = 2; x<maxCol*maxRow; x++){
+        document.getElementById('cell' + x).style.backgroundColor = base;
+    }
+    document.getElementById('cell1').style.backgroundColor = 'pink';
+    document.getElementById('cell'+(maxCol*maxRow)).style.backgroundColor = 'black';
+}
+
